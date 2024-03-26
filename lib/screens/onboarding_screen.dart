@@ -116,11 +116,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   _analytics.fireEvent(AnalyticsEvents.onOnboardingFinish);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => LevelsScreen()),
+                    MaterialPageRoute(builder: (_) => const LevelsScreen()),
                   );
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => AreaScreen()),
+                    MaterialPageRoute(
+                        builder: (_) => const AreaScreen()),
                   );
                 } else {
                   _analytics.fireEventWithMap(

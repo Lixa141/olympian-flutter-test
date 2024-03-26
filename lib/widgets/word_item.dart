@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import '../viewmodels/game_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -16,12 +17,14 @@ class WordItem extends StatefulWidget {
   final WordModel word;
   final bool showStartLeaf;
   final bool showEndLeaf;
+  final bool showAnimation;
 
   const WordItem({
     Key? key,
     required this.word,
     this.showStartLeaf = false,
     this.showEndLeaf = true,
+    this.showAnimation = false,
   }) : super(key: key);
 
   @override
@@ -41,9 +44,9 @@ class _WordItemState extends State<WordItem> {
 
     _wordFocusNode.addListener(() {
       context.read<GameViewModel>().wordFocus(
-        word: widget.word,
-        focus: _wordFocusNode.hasFocus,
-      );
+            word: widget.word,
+            focus: _wordFocusNode.hasFocus,
+          );
 
       if (!_wordFocusNode.hasFocus) {
         context.read<GameViewModel>().clearActiveWord();
@@ -66,15 +69,16 @@ class _WordItemState extends State<WordItem> {
           onShow: () {
             _wordFocusNode.unfocus();
             _textController.clear();
-          }
-      );
+          });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final showInput = [WordState.idle, WordState.incorrect, WordState.input].contains(widget.word.state);
-    final showImageInput = widget.word.image != '' || widget.word.description != '';
+    final showInput = [WordState.idle, WordState.incorrect, WordState.input]
+        .contains(widget.word.state);
+    final showImageInput =
+        widget.word.image != '' || widget.word.description != '';
 
     if (!_wordFocusNode.hasFocus && _textController.value.text != '') {
       _textController.clear();
@@ -95,6 +99,7 @@ class _WordItemState extends State<WordItem> {
               width: 160,
               height: 66,
             ),
+            if (widget.showAnimation) const TouchAnimation(),
             if (widget.word.state == WordState.correct)
               Positioned(
                 top: 0,
@@ -180,7 +185,7 @@ class _WordItemState extends State<WordItem> {
                       border: InputBorder.none,
                     ),
                   ),
-                )
+                ),
           ],
         ),
       ),
@@ -276,5 +281,23 @@ class _WordItemState extends State<WordItem> {
     }
 
     return 'assets/images/word.png';
+  }
+}
+
+class TouchAnimation extends StatelessWidget {
+  const TouchAnimation({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 10,
+      left: 60,
+      right: 22,
+      child: Center(
+        child: Lottie.asset('assets/Animation.json'),
+      ),
+    );
   }
 }

@@ -30,11 +30,13 @@ class _EntryScreenState extends State<EntryScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (_) => OnBoardingScreen(), fullscreenDialog: true),
+              builder: (_) => const OnBoardingScreen(), fullscreenDialog: true),
         );
       }
     });
   }
+
+  int get level => context.watch<GameViewModel>().getLastActiveIndex() + 1;
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +47,8 @@ class _EntryScreenState extends State<EntryScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 12),
+          const Padding(
+            padding: EdgeInsets.only(top: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -71,11 +73,11 @@ class _EntryScreenState extends State<EntryScreen> {
                       vm.play();
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => LevelsScreen()),
+                        MaterialPageRoute(builder: (_) => const LevelsScreen()),
                       );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => AreaScreen()),
+                        MaterialPageRoute(builder: (_) => const AreaScreen()),
                       );
                       analytics.fireEvent(AnalyticsEvents.onPlayTap);
                     },
@@ -89,7 +91,7 @@ class _EntryScreenState extends State<EntryScreen> {
           ),
           Center(
             child: Text(
-              'Продолжить: ${context.watch<GameViewModel>().getLastActiveIndex() + 1} уровень',
+              'Продолжить: $level уровень',
               style: ThemeText.mainLabel,
             ),
           ),
@@ -105,7 +107,7 @@ class _EntryScreenState extends State<EntryScreen> {
                   analytics.fireEvent(AnalyticsEvents.onLevelsTap);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => LevelsScreen()),
+                    MaterialPageRoute(builder: (_) => const LevelsScreen()),
                   );
                 },
                 type: ImageButtonType.stats,
